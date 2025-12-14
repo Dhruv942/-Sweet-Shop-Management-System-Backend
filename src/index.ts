@@ -10,10 +10,39 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "https://sweet-shop-management-system-fronte-topaz.vercel.app",
+        process.env.FRONTEND_URL,
+      ].filter(Boolean);
+
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      const normalizedOrigin = origin.endsWith("/")
+        ? origin.slice(0, -1)
+        : origin;
+
+      const isAllowed = allowedOrigins.some((allowed) => {
+        const normalizedAllowed = allowed?.endsWith("/")
+          ? allowed.slice(0, -1)
+          : allowed;
+        return normalizedOrigin === normalizedAllowed;
+      });
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
