@@ -52,3 +52,14 @@ export const createSweet = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+export const getSweets = async (req: AuthRequest, res: Response) => {
+  try {
+    const sweets = await sweetService.getAllSweets();
+    return res.status(200).json(sweets);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message || "Failed to fetch sweets",
+    });
+  }
+};
