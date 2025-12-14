@@ -38,11 +38,18 @@ export class SweetService {
     }));
   }
   async searchSweets(query: string) {
+    const searchConditions: any[] = [
+      { name: { $regex: query, $options: "i" } },
+      { category: { $regex: query, $options: "i" } },
+    ];
+
+    const priceQuery = parseFloat(query);
+    if (!isNaN(priceQuery)) {
+      searchConditions.push({ price: priceQuery });
+    }
+
     const sweets = await Sweet.find({
-      $or: [
-        { name: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } },
-      ],
+      $or: searchConditions,
     });
     return sweets.map((sweet) => ({
       id: sweet._id,
