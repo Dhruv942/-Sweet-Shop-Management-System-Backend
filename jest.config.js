@@ -13,4 +13,5 @@ module.exports = {
   ],
   moduleFileExtensions: ["ts", "js", "json"],
   setupFiles: ["<rootDir>/jest.setup.js"],
+  globalTeardown: "<rootDir>/jest.teardown.js",
 };

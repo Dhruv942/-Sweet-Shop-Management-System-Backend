@@ -2,15 +2,16 @@ import express, { Application, Request, Response } from "express";
 import mongoose from "mongoose";
 import { connectDB } from "./config/database";
 
+import authRoutes from "./routes/auth.routes";
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV !== "test") {
-  connectDB();
-}
+connectDB();
+
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
