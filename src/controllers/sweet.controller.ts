@@ -90,7 +90,10 @@ export const updateSweet = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    if (quantity !== undefined && (typeof quantity !== "number" || quantity < 0)) {
+    if (
+      quantity !== undefined &&
+      (typeof quantity !== "number" || quantity < 0)
+    ) {
       return res.status(400).json({
         message: "Quantity must be a non-negative number",
       });
@@ -113,6 +116,23 @@ export const updateSweet = async (req: AuthRequest, res: Response) => {
     }
     return res.status(400).json({
       message: error.message || "Failed to update sweet",
+    });
+  }
+};
+
+export const deleteSweet = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await sweetService.deleteSweet(id);
+    return res.status(200).json(result);
+  } catch (error: any) {
+    if (error.message === "Sweet not found") {
+      return res.status(404).json({
+        message: "Sweet not found",
+      });
+    }
+    return res.status(400).json({
+      message: error.message || "Failed to delete sweet",
     });
   }
 };

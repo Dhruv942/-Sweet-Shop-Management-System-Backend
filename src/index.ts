@@ -5,7 +5,7 @@ import { connectDB } from "./config/database";
 import authRoutes from "./routes/auth.routes";
 import sweetRoutes from "./routes/sweet.routes";
 const app: Application = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,8 +34,8 @@ app.get("/health", (req: Request, res: Response) => {
 });
 
 if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server is running on port ${PORT}`);
   });
 }
 

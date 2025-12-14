@@ -32,3 +32,14 @@ export const authenticate = (
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
+
+export const isAdmin = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.userRole !== "ADMIN") {
+    return res.status(403).json({ message: "Only admin can delete sweets" });
+  }
+  next();
+};

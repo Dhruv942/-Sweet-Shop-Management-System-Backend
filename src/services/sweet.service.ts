@@ -101,4 +101,18 @@ export class SweetService {
       image: sweet.image,
     };
   }
+
+  async deleteSweet(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Sweet not found");
+    }
+
+    const sweet = await Sweet.findByIdAndDelete(id);
+
+    if (!sweet) {
+      throw new Error("Sweet not found");
+    }
+
+    return { message: "Sweet deleted successfully" };
+  }
 }
