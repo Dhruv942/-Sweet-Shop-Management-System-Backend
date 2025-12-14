@@ -1,4 +1,5 @@
 import { Sweet } from "../models/sweet.model";
+import mongoose from "mongoose";
 
 export class SweetService {
   async createSweet(data: {
@@ -71,6 +72,10 @@ export class SweetService {
       image?: string;
     }
   ) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Sweet not found");
+    }
+
     const updateData: any = {};
     if (data.name !== undefined) updateData.name = data.name;
     if (data.category !== undefined) updateData.category = data.category;
