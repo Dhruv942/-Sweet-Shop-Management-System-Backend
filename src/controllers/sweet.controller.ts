@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { SweetService } from "../services/sweet.service";
 import { AuthRequest } from "../middleware/auth.middleware";
+import { Sweet } from "../models/sweet.model";
 
 const sweetService = new SweetService();
 
@@ -25,7 +26,11 @@ export const createSweet = async (req: AuthRequest, res: Response) => {
         message: "Quantity must be a non-negative number",
       });
     }
-
+    if (await Sweet.findOne({ name })) {
+      return res.status(409).json({
+        message: "Sweet already exists",
+      });
+    }
     const sweet = await sweetService.createSweet({
       name,
       category,
