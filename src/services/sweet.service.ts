@@ -6,12 +6,14 @@ export class SweetService {
     category: string;
     price: number;
     quantity: number;
+    image: string;
   }) {
     const sweet = await Sweet.create({
       name: data.name,
       category: data.category,
       price: data.price,
       quantityInStock: data.quantity,
+      image: data.image,
     });
 
     return {
@@ -20,6 +22,7 @@ export class SweetService {
       category: sweet.category,
       price: sweet.price,
       quantity: sweet.quantityInStock,
+      image: sweet.image,
     };
   }
 }

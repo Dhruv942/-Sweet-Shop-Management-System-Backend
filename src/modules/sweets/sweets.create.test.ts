@@ -27,6 +27,7 @@ describe("POST /api/sweets - Create Sweet", () => {
         category: "Indian",
         price: 500,
         quantity: 20,
+        image: "https://example.com/kaju-katli.jpg",
       });
 
     expect(response.status).toBe(201);
@@ -34,6 +35,7 @@ describe("POST /api/sweets - Create Sweet", () => {
     expect(response.body.category).toBe("Indian");
     expect(response.body.price).toBe(500);
     expect(response.body.quantity).toBe(20);
+    expect(response.body.image).toBe("https://example.com/kaju-katli.jpg");
   });
 
   it("should fail if user is not authenticated", async () => {
@@ -42,6 +44,7 @@ describe("POST /api/sweets - Create Sweet", () => {
       category: "Indian",
       price: 300,
       quantity: 10,
+      image: "https://example.com/gulab-jamun.jpg",
     });
 
     expect(response.status).toBe(401);
@@ -56,6 +59,7 @@ describe("POST /api/sweets - Create Sweet", () => {
         category: "Indian",
         price: -100,
         quantity: -5,
+        image: "https://example.com/barfi.jpg",
       });
 
     expect(response.status).toBe(400);
@@ -67,6 +71,7 @@ describe("POST /api/sweets - Create Sweet", () => {
       category: "Indian",
       price: 500,
       quantity: 20,
+      image: "https://example.com/kaju-katli.jpg",
     };
 
     await request(app)
@@ -92,6 +97,7 @@ describe("POST /api/sweets - Create Sweet", () => {
         category: "Indian",
         price: 300,
         quantity: 10,
+        image: "https://example.com/gulab-jamun.jpg",
       });
 
     const response = await request(app)
@@ -102,6 +108,7 @@ describe("POST /api/sweets - Create Sweet", () => {
         category: "Indian",
         price: 350,
         quantity: 15,
+        image: "https://example.com/gulab-jamun2.jpg",
       });
 
     expect(response.status).toBe(409);

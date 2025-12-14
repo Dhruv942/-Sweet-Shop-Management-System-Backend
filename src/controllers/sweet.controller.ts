@@ -7,11 +7,17 @@ const sweetService = new SweetService();
 
 export const createSweet = async (req: AuthRequest, res: Response) => {
   try {
-    const { name, category, price, quantity } = req.body;
+    const { name, category, price, quantity, image } = req.body;
 
-    if (!name || !category || price === undefined || quantity === undefined) {
+    if (
+      !name ||
+      !category ||
+      price === undefined ||
+      quantity === undefined ||
+      !image
+    ) {
       return res.status(400).json({
-        message: "Name, category, price, and quantity are required",
+        message: "Name, category, price, quantity, and image are required",
       });
     }
 
@@ -36,6 +42,7 @@ export const createSweet = async (req: AuthRequest, res: Response) => {
       category,
       price,
       quantity,
+      image,
     });
 
     return res.status(201).json(sweet);
