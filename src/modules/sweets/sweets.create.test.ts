@@ -46,4 +46,18 @@ describe("POST /api/sweets - Create Sweet", () => {
 
     expect(response.status).toBe(401);
   });
+
+  it("should fail if price or quantity is negative", async () => {
+    const response = await request(app)
+      .post("/api/sweets")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send({
+        name: "Barfi",
+        category: "Indian",
+        price: -100,
+        quantity: -5,
+      });
+
+    expect(response.status).toBe(400);
+  });
 });

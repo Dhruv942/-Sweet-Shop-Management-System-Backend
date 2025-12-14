@@ -28,4 +28,3 @@ export const createSweet = async (req: AuthRequest, res: Response) => {
     });
   }
 };
-
