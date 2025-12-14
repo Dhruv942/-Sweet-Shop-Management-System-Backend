@@ -145,4 +145,30 @@ export class SweetService {
       },
     };
   }
+
+  async restockSweet(id: string, quantity: number) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Sweet not found");
+    }
+
+    const sweet = await Sweet.findById(id);
+    if (!sweet) {
+      throw new Error("Sweet not found");
+    }
+
+    sweet.quantityInStock += quantity;
+    await sweet.save();
+
+    return {
+      message: "Restock successful",
+      sweet: {
+        id: sweet._id,
+        name: sweet.name,
+        category: sweet.category,
+        price: sweet.price,
+        quantity: sweet.quantityInStock,
+        image: sweet.image,
+      },
+    };
+  }
 }

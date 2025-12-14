@@ -39,7 +39,13 @@ export const isAdmin = (
   next: NextFunction
 ) => {
   if (req.userRole !== "ADMIN") {
-    return res.status(403).json({ message: "Only admin can delete sweets" });
+    const action =
+      req.method === "DELETE"
+        ? "delete sweets"
+        : req.method === "POST" && req.path.includes("restock")
+        ? "restock sweets"
+        : "perform this action";
+    return res.status(403).json({ message: `Only admin can ${action}` });
   }
   next();
 };
