@@ -16,3 +16,21 @@ describe("Auth API - Register", () => {
     expect(response.body.user.password).toBeUndefined();
   });
 });
+
+describe("Auth API - Register (Duplicate Email)", () => {
+  it("should return 409 when registering with existing email", async () => {
+    const payload = {
+      email: "test@example.com@gmail.com",
+      password: "password123",
+    };
+
+    await request(app).post("/api/auth/register").send(payload);
+
+    const response = await request(app)
+      .post("/api/auth/register")
+      .send(payload);
+
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe("User already exists");
+  });
+});
