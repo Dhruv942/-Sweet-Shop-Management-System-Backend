@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { connectDB } from "./config/database";
 
 import authRoutes from "./routes/auth.routes";
+import sweetRoutes from "./routes/sweet.routes";
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 app.use("/api/auth", authRoutes);
+app.use("/api/sweets", sweetRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
