@@ -12,4 +12,5 @@ module.exports = {
     "!src/**/__tests__/**",
   ],
   moduleFileExtensions: ["ts", "js", "json"],
+  setupFiles: ["<rootDir>/jest.setup.js"],
 };
