@@ -197,6 +197,10 @@ npm run test:watch
 npm run test:coverage
 ```
 
+### Test Cases
+
+![Test Cases](./images/testcases.png)
+
 ## Environment Variables
 
 | Variable         | Description                               | Default                                 |
