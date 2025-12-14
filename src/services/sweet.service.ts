@@ -37,4 +37,20 @@ export class SweetService {
       image: sweet.image,
     }));
   }
+  async searchSweets(query: string) {
+    const sweets = await Sweet.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    });
+    return sweets.map((sweet) => ({
+      id: sweet._id,
+      name: sweet.name,
+      category: sweet.category,
+      price: sweet.price,
+      quantity: sweet.quantityInStock,
+      image: sweet.image,
+    }));
+  }
 }

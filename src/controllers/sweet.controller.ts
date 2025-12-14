@@ -63,3 +63,18 @@ export const getSweets = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+export const searchSweets = async (req: AuthRequest, res: Response) => {
+  try {
+    const { query } = req.query;
+    if (!query || typeof query !== "string") {
+      return res.status(200).json([]);
+    }
+    const sweets = await sweetService.searchSweets(query);
+    return res.status(200).json(sweets);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message || "Failed to search sweets",
+    });
+  }
+};
