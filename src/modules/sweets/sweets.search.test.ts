@@ -57,4 +57,40 @@ describe("GET /api/sweets/search", () => {
     expect(response.body[0]).toHaveProperty("quantity");
     expect(response.body[0]).toHaveProperty("image");
   });
+
+  it("should return list of sweets when searched by price", async () => {
+    await Sweet.create([
+      {
+        name: "Kaju Katli",
+        category: "Indian",
+        price: 500,
+        quantityInStock: 20,
+        image: "https://example.com/kaju-katli.jpg",
+      },
+      {
+        name: "Gulab Jamun",
+        category: "Indian",
+        price: 300,
+        quantityInStock: 15,
+        image: "https://example.com/gulab-jamun.jpg",
+      },
+      {
+        name: "Barfi",
+        category: "Indian",
+        price: 500,
+        quantityInStock: 25,
+        image: "https://example.com/barfi.jpg",
+      },
+    ]);
+
+    const response = await request(app)
+      .get("/api/sweets/search?query=500")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(2);
+    expect(response.body[0].price).toBe(500);
+    expect(response.body[1].price).toBe(500);
+  });
 });
