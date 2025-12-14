@@ -78,3 +78,22 @@ export const searchSweets = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+export const updateSweet = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, category, price, quantity, image } = req.body;
+    const sweet = await sweetService.updateSweet(id, {
+      name,
+      category,
+      price,
+      quantity,
+      image,
+    });
+    return res.status(200).json(sweet);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message || "Failed to update sweet",
+    });
+  }
+};

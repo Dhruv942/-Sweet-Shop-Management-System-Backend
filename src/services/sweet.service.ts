@@ -60,4 +60,40 @@ export class SweetService {
       image: sweet.image,
     }));
   }
+
+  async updateSweet(
+    id: string,
+    data: {
+      name?: string;
+      category?: string;
+      price?: number;
+      quantity?: number;
+      image?: string;
+    }
+  ) {
+    const updateData: any = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.category !== undefined) updateData.category = data.category;
+    if (data.price !== undefined) updateData.price = data.price;
+    if (data.quantity !== undefined) updateData.quantityInStock = data.quantity;
+    if (data.image !== undefined) updateData.image = data.image;
+
+    const sweet = await Sweet.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!sweet) {
+      throw new Error("Sweet not found");
+    }
+
+    return {
+      id: sweet._id,
+      name: sweet.name,
+      category: sweet.category,
+      price: sweet.price,
+      quantity: sweet.quantityInStock,
+      image: sweet.image,
+    };
+  }
 }
