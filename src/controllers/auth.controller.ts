@@ -21,6 +21,11 @@ export const register = async (req: Request, res: Response) => {
       token: result.token,
     });
   } catch (error: any) {
+    if (error.message === "User already exists") {
+      return res.status(409).json({
+        message: "User already exists",
+      });
+    }
     return res.status(400).json({
       message: error.message || "Registration failed",
     });
