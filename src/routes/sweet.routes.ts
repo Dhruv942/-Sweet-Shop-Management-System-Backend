@@ -5,6 +5,7 @@ import {
   searchSweets,
   updateSweet,
   deleteSweet,
+  purchaseSweet,
 } from "../controllers/sweet.controller";
 import { authenticate, isAdmin } from "../middleware/auth.middleware";
 
@@ -15,5 +16,6 @@ router.get("/", authenticate, getSweets);
 router.get("/search", authenticate, searchSweets);
 router.put("/:id", authenticate, updateSweet);
 router.delete("/:id", authenticate, isAdmin, deleteSweet);
+router.post("/:id/purchase", authenticate, purchaseSweet);
 
 export default router;

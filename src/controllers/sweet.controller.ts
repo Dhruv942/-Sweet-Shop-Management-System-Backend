@@ -136,3 +136,39 @@ export const deleteSweet = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+export const purchaseSweet = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+
+    if (quantity === undefined || quantity === null) {
+      return res.status(400).json({
+        message: "Quantity is required",
+      });
+    }
+
+    if (typeof quantity !== "number" || quantity <= 0) {
+      return res.status(400).json({
+        message: "Quantity must be a positive number",
+      });
+    }
+
+    const result = await sweetService.purchaseSweet(id, quantity);
+    return res.status(200).json(result);
+  } catch (error: any) {
+    if (error.message === "Sweet not found") {
+      return res.status(404).json({
+        message: "Sweet not found",
+      });
+    }
+    if (error.message === "Insufficient stock") {
+      return res.status(400).json({
+        message: "Insufficient stock",
+      });
+    }
+    return res.status(400).json({
+      message: error.message || "Failed to purchase sweet",
+    });
+  }
+};
