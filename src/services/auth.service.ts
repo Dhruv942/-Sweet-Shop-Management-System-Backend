@@ -1,8 +1,10 @@
 import * as bcrypt from "bcryptjs";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
 
-const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 export class AuthService {
   async register(email: string, password: string) {
@@ -11,17 +13,28 @@ export class AuthService {
       throw new Error("User already exists");
     }
 
+    let role: "USER" | "ADMIN" = "USER";
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      role = "ADMIN";
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       email,
       password: hashedPassword,
-      role: "USER",
+      role,
     });
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        role: user.role,
+      },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
     return {
       user: {
