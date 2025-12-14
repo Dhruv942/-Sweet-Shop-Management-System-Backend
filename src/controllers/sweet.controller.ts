@@ -14,6 +14,18 @@ export const createSweet = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    if (typeof price !== "number" || price < 0) {
+      return res.status(400).json({
+        message: "Price must be a non-negative number",
+      });
+    }
+
+    if (typeof quantity !== "number" || quantity < 0) {
+      return res.status(400).json({
+        message: "Quantity must be a non-negative number",
+      });
+    }
+
     const sweet = await sweetService.createSweet({
       name,
       category,
