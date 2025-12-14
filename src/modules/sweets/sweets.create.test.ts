@@ -60,4 +60,51 @@ describe("POST /api/sweets - Create Sweet", () => {
 
     expect(response.status).toBe(400);
   });
+
+  it("should not allow creating sweet with same name twice", async () => {
+    const payload = {
+      name: "Kaju Katli",
+      category: "Indian",
+      price: 500,
+      quantity: 20,
+    };
+
+    await request(app)
+      .post("/api/sweets")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send(payload);
+
+    const response = await request(app)
+      .post("/api/sweets")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send(payload);
+
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe("Sweet already exists");
+  });
+
+  it("should not allow creating sweet with same name and same category", async () => {
+    await request(app)
+      .post("/api/sweets")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send({
+        name: "Gulab Jamun",
+        category: "Indian",
+        price: 300,
+        quantity: 10,
+      });
+
+    const response = await request(app)
+      .post("/api/sweets")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send({
+        name: "Gulab Jamun",
+        category: "Indian",
+        price: 350,
+        quantity: 15,
+      });
+
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe("Sweet already exists");
+  });
 });

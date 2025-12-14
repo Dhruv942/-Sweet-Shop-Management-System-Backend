@@ -14,7 +14,6 @@ const sweetSchema = new Schema<ISweet>(
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     category: {
@@ -38,5 +37,7 @@ const sweetSchema = new Schema<ISweet>(
     timestamps: true,
   }
 );
+
+sweetSchema.index({ name: 1, category: 1 }, { unique: true });
 
 export const Sweet = model<ISweet>("Sweet", sweetSchema);
